@@ -15,9 +15,10 @@ plugins {
 apply(plugin = "stringfog")
 
 // =================================================================
-// 👑 NOVA LAUNCHER IDENTITY & PACKAGE MANAGEMENT CONFIGURATION
+// 👑 IDENTITY, PACKAGE & RESOURCE REDIRECT CONFIGURATION
 // =================================================================
-val novaPackageName = "com.nova.launch" 
+val novaPackageName = "com.nova.launch" // Your custom APK brand package identity!
+val sourcePackageName = "com.movtery.zalithlauncher" // Links the physical codebase directories
 
 val launcherAPPName = project.findProperty("launcher_app_name") as? String ?: error("The \"launcher_app_name\" property is not set in gradle.properties.")
 val launcherName = project.findProperty("launcher_name") as? String ?: error("The \"launcher_name\" property is not set in gradle.properties.")
@@ -48,13 +49,13 @@ fun getKeyFromLocal(envKey: String, fileName: String? = null, default: String? =
 
 configure<com.github.megatronking.stringfog.plugin.StringFogExtension> {
     implementation = "com.github.megatronking.stringfog.xor.StringFogImpl"
-    fogPackages = arrayOf("$novaPackageName.info")
+    fogPackages = arrayOf("$sourcePackageName.info")
     kg = com.github.megatronking.stringfog.plugin.kg.RandomKeyGenerator()
     mode = com.github.megatronking.stringfog.plugin.StringFogMode.bytes
 }
 
 android {
-    namespace = novaPackageName
+    namespace = sourcePackageName // Points compilation to the existing physical source folder strings
     compileSdk = 36
 
     signingConfigs {
@@ -67,7 +68,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = novaPackageName
+        applicationId = novaPackageName // Outputs your custom branding package name into the final APK
         applicationIdSuffix = ".v2"
         minSdk = 26
         targetSdk = 35
@@ -90,7 +91,7 @@ android {
             isMinifyEnabled = false
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
-            signingConfig = null 
+            signingConfig = null // Bypasses keystore verification checks completely on GitHub servers
         }
     }
 
@@ -216,7 +217,7 @@ tasks.register("generateInfoDistributor") {
             "\"$launcherUrl\"".toStatement(variable = "URL_HOME"),
             "\"${getKeyFromLocal("CURSEFORGE_API_KEY", ".curseforge_api.txt", defaultCurseForgeApiKey)}\"".toStatement(variable = "CURSEFORGE_API")
         )
-        generateJavaClass(generatedNovaDir, "$novaPackageName.info", "InfoDistributor", constantList)
+        generateJavaClass(generatedNovaDir, "$sourcePackageName.info", "InfoDistributor", constantList)
     }
 }
 

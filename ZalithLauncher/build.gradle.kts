@@ -64,11 +64,15 @@ android {
             keyAlias = "com.nova"
             keyPassword = getKeyFromLocal("KEY_PASSWORD", ".key_password.txt")
         }
-        create("debugBuild") {
-            storeFile = file("nova_launcher_debug.jks")
-            storePassword = defaultStorePassword
-            keyAlias = "nova_launch_debug"
-            keyPassword = defaultKeyPassword
+        
+        // =================================================================
+        // FIXED DEBUG KEY CONFIGURATION: Uses Android's built-in system key
+        // =================================================================
+        getByName("debug") {
+            storeFile = file(System.getProperty("user.home") + "/.android/debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
         }
     }
 
@@ -96,7 +100,7 @@ android {
             isMinifyEnabled = false
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
-            signingConfig = signingConfigs.getByName("debugBuild")
+            signingConfig = signingConfigs.getByName("debug") // Points cleanly to our dynamic backup system key
         }
     }
 

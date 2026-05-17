@@ -38,7 +38,7 @@ import com.nova.launch.ui.screens.content.download.assets.elements.PackIdentifie
 import com.nova.launch.ui.screens.content.elements.TitleTaskFlowDialog
 import com.nova.launch.utils.logging.Logger.IError
 import io.ktor.client.plugins.HttpRequestTimeoutException
-import kotlinlines.coroutines.resume
+import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.serialization.SerializationException
 import java.net.ConnectException

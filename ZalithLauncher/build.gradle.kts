@@ -64,16 +64,6 @@ android {
             keyAlias = "com.nova"
             keyPassword = getKeyFromLocal("KEY_PASSWORD", ".key_password.txt")
         }
-        
-        // =================================================================
-        // FIXED DEBUG KEY CONFIGURATION: Uses Android's built-in system key
-        // =================================================================
-        getByName("debug") {
-            storeFile = file(System.getProperty("user.home") + "/.android/debug.keystore")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
-        }
     }
 
     defaultConfig {
@@ -96,12 +86,13 @@ android {
                 "proguard-rules.pro"
             )
         }
-                 debug {
+        debug {
             isMinifyEnabled = false
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
-            signingConfig = null // Change this line right here!
+            signingConfig = null 
         }
+    }
 
     sourceSets["main"].java.srcDirs(generatedNovaDir)
 
@@ -318,6 +309,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
+    implementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
 }

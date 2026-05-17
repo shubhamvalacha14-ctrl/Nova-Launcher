@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-package com.movtery.zalithlauncher.viewmodel
+package com.nova.launch.viewmodel
 
 import android.content.Context
 import android.net.Uri
@@ -40,21 +40,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonSyntaxException
-import com.movtery.zalithlauncher.R
-import com.movtery.zalithlauncher.game.download.jvm_server.JvmCrashException
-import com.movtery.zalithlauncher.game.download.modpack.install.ModpackImporter
-import com.movtery.zalithlauncher.game.download.modpack.install.PackNotSupportedException
-import com.movtery.zalithlauncher.game.download.modpack.install.UnsupportedPackReason
-import com.movtery.zalithlauncher.game.download.modpack.platform.PackPlatform
-import com.movtery.zalithlauncher.game.version.download.DownloadFailedException
-import com.movtery.zalithlauncher.game.version.installed.VersionsManager
-import com.movtery.zalithlauncher.ui.components.MarqueeText
-import com.movtery.zalithlauncher.ui.components.SimpleAlertDialog
-import com.movtery.zalithlauncher.ui.components.fadeEdge
-import com.movtery.zalithlauncher.ui.screens.content.download.ModpackVersionNameDialog
-import com.movtery.zalithlauncher.ui.screens.content.download.assets.elements.PackIdentifier
-import com.movtery.zalithlauncher.ui.screens.content.elements.TitleTaskFlowDialog
-import com.movtery.zalithlauncher.utils.logging.Logger.lError
+import com.nova.launch.R
+import com.nova.launch.game.download.jvm_server.JvmCrashException
+import com.nova.launch.game.download.modpack.install.ModpackImporter
+import com.nova.launch.game.download.modpack.install.PackNotSupportedException
+import com.nova.launch.game.download.modpack.install.UnsupportedPackReason
+import com.nova.launch.game.download.modpack.platform.PackPlatform
+import com.nova.launch.game.version.download.DownloadFailedException
+import com.nova.launch.game.version.installed.VersionsManager
+import com.nova.launch.ui.components.MarqueeText
+import com.nova.launch.ui.components.SimpleAlertDialog
+import com.nova.launch.ui.components.fadeEdge
+import com.nova.launch.ui.screens.content.download.ModpackVersionNameDialog
+import com.nova.launch.ui.screens.content.download.assets.elements.PackIdentifier
+import com.nova.launch.ui.screens.content.elements.TitleTaskFlowDialog
+import com.nova.launch.utils.logging.Logger.lError
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.serialization.SerializationException

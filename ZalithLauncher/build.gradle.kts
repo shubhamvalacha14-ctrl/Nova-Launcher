@@ -14,7 +14,11 @@ plugins {
 }
 apply(plugin = "stringfog")
 
-val zalithPackageName = "com.nova.launch"
+// =================================================================
+// 👑 NOVA LAUNCHER IDENTITY & PACKAGE MANAGEMENT CONFIGURATION
+// =================================================================
+val novaPackageName = "com.nova.launch" 
+
 val launcherAPPName = project.findProperty("launcher_app_name") as? String ?: error("The \"launcher_app_name\" property is not set in gradle.properties.")
 val launcherName = project.findProperty("launcher_name") as? String ?: error("The \"launcher_name\" property is not set in gradle.properties.")
 val launcherShortName = project.findProperty("launcher_short_name") as? String ?: error("The \"launcher_short_name\" property is not set in gradle.properties.")
@@ -28,7 +32,8 @@ val defaultStorePassword = project.findProperty("default_store_password") as? St
 val defaultKeyPassword = project.findProperty("default_key_password") as? String ?: error("The \"default_key_password\" property is not set in gradle.properties.")
 val defaultCurseForgeApiKey = project.findProperty("curseforge_api_key") as? String
 
-val generatedNovaDir = file("$buildDir/generated/source/nova/java")
+// Modern Gradle build directory path mapping
+val generatedNovaDir = file("${layout.buildDirectory.get().asFile}/generated/source/nova/java")
 
 fun getKeyFromLocal(envKey: String, fileName: String? = null, default: String? = null): String {
     val key = System.getenv(envKey)
@@ -43,7 +48,7 @@ fun getKeyFromLocal(envKey: String, fileName: String? = null, default: String? =
 
 configure<com.github.megatronking.stringfog.plugin.StringFogExtension> {
     implementation = "com.github.megatronking.stringfog.xor.StringFogImpl"
-    fogPackages = arrayOf("$zalithPackageName.info")
+    fogPackages = arrayOf("$novaPackageName.info")
     kg = com.github.megatronking.stringfog.plugin.kg.RandomKeyGenerator()
     mode = com.github.megatronking.stringfog.plugin.StringFogMode.bytes
 }
@@ -95,7 +100,7 @@ android {
         }
     }
 
-    sourceSets["main"].java.srcDirs(generatedZalithDir)
+    sourceSets["main"].java.srcDirs(generatedNovaDir)
 
     androidComponents {
         onVariants { variant ->
@@ -217,7 +222,7 @@ tasks.register("generateInfoDistributor") {
             "\"$launcherUrl\"".toStatement(variable = "URL_HOME"),
             "\"${getKeyFromLocal("CURSEFORGE_API_KEY", ".curseforge_api.txt", defaultCurseForgeApiKey)}\"".toStatement(variable = "CURSEFORGE_API")
         )
-        generateJavaClass(generatedZalithDir, "$zalithPackageName.info", "InfoDistributor", constantList)
+        generateJavaClass(generatedNovaDir, "$novaPackageName.info", "InfoDistributor", constantList)
     }
 }
 
@@ -259,11 +264,13 @@ dependencies {
     implementation(libs.richtext.ui.material3)
     implementation(platform(libs.editor.bom))
     implementation(libs.editor)
-    //Project
+    
+    // Project Modules
     implementation(project(":LayerController"))
     implementation(project(":ColorPicker"))
     implementation(project(":Terracotta"))
-    //Utils
+    
+    // Utils
     implementation(libs.bytehook)
     implementation(libs.gson)
     implementation(libs.commons.io)
@@ -288,19 +295,23 @@ dependencies {
     implementation(libs.process.phoenix)
     implementation(libs.lunarcalendar)
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
-    //Safe
+    
+    // Security & Storage
     implementation(libs.stringfog.xor)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     implementation(libs.sqlcipher.android)
     ksp(libs.androidx.room.compiler)
-    //Support
+    
+    // Support
     implementation(libs.proxy.client.android)
-    //Hilt
+    
+    // Dependency Injection
     implementation(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
-    //Test
+    
+    // Testing Suite
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

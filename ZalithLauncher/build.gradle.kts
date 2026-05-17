@@ -96,13 +96,12 @@ android {
                 "proguard-rules.pro"
             )
         }
-        debug {
+                 debug {
             isMinifyEnabled = false
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
-            signingConfig = signingConfigs.getByName("debug") // Points cleanly to our dynamic backup system key
+            signingConfig = null // Change this line right here!
         }
-    }
 
     sourceSets["main"].java.srcDirs(generatedNovaDir)
 

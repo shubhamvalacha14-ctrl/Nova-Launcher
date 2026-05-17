@@ -14,7 +14,7 @@ plugins {
 }
 apply(plugin = "stringfog")
 
-val zalithPackageName = "com.movtery.zalithlauncher"
+val zalithPackageName = "com.nova.launch"
 val launcherAPPName = project.findProperty("launcher_app_name") as? String ?: error("The \"launcher_app_name\" property is not set in gradle.properties.")
 val launcherName = project.findProperty("launcher_name") as? String ?: error("The \"launcher_name\" property is not set in gradle.properties.")
 val launcherShortName = project.findProperty("launcher_short_name") as? String ?: error("The \"launcher_short_name\" property is not set in gradle.properties.")
@@ -28,7 +28,7 @@ val defaultStorePassword = project.findProperty("default_store_password") as? St
 val defaultKeyPassword = project.findProperty("default_key_password") as? String ?: error("The \"default_key_password\" property is not set in gradle.properties.")
 val defaultCurseForgeApiKey = project.findProperty("curseforge_api_key") as? String
 
-val generatedZalithDir = file("$buildDir/generated/source/zalith/java")
+val generatedNovaDir = file("$buildDir/generated/source/nova/java")
 
 fun getKeyFromLocal(envKey: String, fileName: String? = null, default: String? = null): String {
     val key = System.getenv(envKey)
@@ -49,26 +49,26 @@ configure<com.github.megatronking.stringfog.plugin.StringFogExtension> {
 }
 
 android {
-    namespace = zalithPackageName
+    namespace = novaPackageName
     compileSdk = 36
 
     signingConfigs {
         create("releaseBuild") {
-            storeFile = file("zalith_launcher.jks")
+            storeFile = file("nova_launcher.jks")
             storePassword = getKeyFromLocal("STORE_PASSWORD", ".store_password.txt")
-            keyAlias = "movtery_zalith"
+            keyAlias = "com.nova"
             keyPassword = getKeyFromLocal("KEY_PASSWORD", ".key_password.txt")
         }
         create("debugBuild") {
-            storeFile = file("zalith_launcher_debug.jks")
+            storeFile = file("nova_launcher_debug.jks")
             storePassword = defaultStorePassword
-            keyAlias = "movtery_zalith_debug"
+            keyAlias = "nova_launch_debug"
             keyPassword = defaultKeyPassword
         }
     }
 
     defaultConfig {
-        applicationId = zalithPackageName
+        applicationId = novaPackageName
         applicationIdSuffix = ".v2"
         minSdk = 26
         targetSdk = 35
